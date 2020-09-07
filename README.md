@@ -1,18 +1,13 @@
-# Session6-Poker
+# Session7-FunctionsPart2
 
 ![](https://dzone.com/storage/temp/11727498-download.png)
 
+## 1. Returns true if n is a Fibinacci Number, else false
 ```python
-    def generate_deck_from_map_zip():
-        """
-        Generates a deck of 52 Cards using map,zip and lambda.
-        """
-        return list(map(lambda x: (x[0], x[1]), zip(vals * 4, suits * 13)))
+    is_fib = lambda n: is_perfect_square(5 * n * n + 4) or is_perfect_square(5 * n * n - 4)
 
 ```
-
-        
-        
+      
  ## 2.1 add 2 iterables a and b such that a is even and b is odd
 ```python
     def add_two_iterables_even_odd(itr1, itr2):
@@ -52,7 +47,74 @@
         return "".join([chr((((ord(ch.lower()) - 97) + 5) % 26) + 97) for ch in string])
 
 ```
-            
+## 3. A list comprehension expression that takes a ~200 word paragraph, and checks whether it has any of the swear words
+```python
+    def check_if_swear_words_present(paragraph):
+        swear_words = set(
+            {i.replace("\n", "").strip() for i in open("swear_words.txt").readlines()}
+        )
+        return any(
+            word
+            for word in re.findall(r"\w+|[^\w\s]", paragraph, re.UNICODE)
+            if word in swear_words
+        )
+```
+
+## 4. Using reduce function:
+## 4.1 add only even numbers in a list
+```python
+    def sum_even_nos(arr):
+        return reduce(lambda x, y: x + y if y % 2 == 0 else x, arr, 0)
+```
+
+## 4.2 find the biggest character in a string (printable ascii characters)
+```python
+    def find_biggest_char(string):
+        return reduce(lambda res, char: res if ord(res) > ord(char) else char, string)
+```
+
+## 4.3 adds every 3rd number in a list
+```python
+    def add_every_third_no(arr):
+        return reduce(
+            lambda result, element: result + element,
+            list(map(lambda x, y: x if (y + 1) % 3 == 0 else 0, range(len(arr)), arr)),
+        )
+```
+
+## 5.Using randint, random.choice and list comprehensions, write an expression that generates 15 random KADDAADDDD number plates,
+##  where KA is fixed, D stands for a digit, and A stands for Capital alphabets. 10<<DD<<99 & 1000<<DDDD<<9999 PTS:100
+```python
+    def generate_random_dl_list():
+        random_CAP_letter = lambda: chr(random.randint(65, 90))
+
+        return [
+            "KA"
+            + str(random.randint(10, 99))
+            + random_CAP_letter()
+            + random_CAP_letter()
+            + str(random.randint(1000, 9999))
+            for _ in range(15)
+        ]
+```
+
+## 6.Write the above again from scratch where KA can be changed to DL, and 1000/9999 ranges can be provided.
+## Now use a partial function such that 1000/9999 are hardcoded, but KA can be provided PTS:100
+```python
+    def generate_dl(state_code="KA", start=1000, end=9999):
+        random_CAP_letter = lambda: chr(random.randint(65, 90))
+
+        return [
+            state_code
+            + str(random.randint(10, 99))
+            + random_CAP_letter()
+            + random_CAP_letter()
+            + str(random.randint(start, end))
+            for _ in range(15)
+        ]
+    generate_delhi_dl = partial(generate_dl, "DL")
+    generate_karnataka_dl_within_range = partial(generate_dl, start=1000, end=9999)
+```
 
 # TEST CASES
 
